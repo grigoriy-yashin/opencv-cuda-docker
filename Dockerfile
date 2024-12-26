@@ -5,11 +5,6 @@ ARG ARCH=""
 FROM nvidia/cuda${ARCH}:${CUDA}-devel-ubuntu${UBUNTU}
 
 ARG NVIDIA_DISTRO="ubuntu1804/x86_64"
-ARG OPENCV="3.4.14"
-ARG CUDA_ARCH_BIN="5.2 5.3 6.0 6.1 6.2 7.0 7.2 7.5 8.0 8.6"
-ARG CUDA_ARCH_PTX="8.6"
-ARG CUDNN="OFF"
-
 ENV DEBIAN_FRONTEND=noninteractive
 
 # See https://developer.nvidia.com/blog/updating-the-cuda-linux-gpg-repository-key/
@@ -66,11 +61,20 @@ RUN apt update && apt install -y --no-install-recommends build-essential \
     libvtk6-dev \
     liblapack-dev \
     libv4l-dev \
-    libhdf5-serial-dev
+    libhdf5-serial-dev \
+    nvtop
 
 WORKDIR /tmp
+
+ARG OPENCV="3.4.14"
+
 RUN wget https://github.com/opencv/opencv/archive/refs/tags/${OPENCV}.zip && unzip ${OPENCV}.zip && rm ${OPENCV}.zip
 RUN wget https://github.com/opencv/opencv_contrib/archive/${OPENCV}.zip && unzip ${OPENCV}.zip && rm ${OPENCV}.zip
+
+ARG CUDA_ARCH_BIN="5.2 5.3 6.0 6.1 6.2 7.0 7.2 7.5 8.0 8.6"
+ARG CUDA_ARCH_PTX="8.6"
+ARG CUDNN="OFF"
+
 RUN mkdir opencv-${OPENCV}/build && \
     cd opencv-${OPENCV}/build && \
     cmake -GNinja -DOPENCV_EXTRA_MODULES_PATH=/tmp/opencv_contrib-${OPENCV}/modules \
