@@ -8,63 +8,6 @@ on:
   workflow_dispatch:
 
 jobs:
-  build-ubuntu18_04:
-    name: Build OpenCV 3.4.14 with CUDA 11.3.1 on Ubuntu 18.04
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v1
-
-      - name: Log in to Registries
-        uses: docker/login-action@v1
-        with:
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_PASSWORD }}
-
-      - name: Login to GitHub Container Registry
-        uses: docker/login-action@v1
-        with:
-          registry: ghcr.io
-          username: ${{ github.repository_owner }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Build and Push OpenCV CUDA to Registries
-        uses: docker/build-push-action@v2
-        with:
-          context: .
-          pull: true
-          push: true
-          cache-from: type=registry,ref=ghcr.io/${{ github.repository }}:cache-ubuntu18.04-cuda11.3.1-opencv3.4.14
-          cache-to: type=registry,ref=ghcr.io/${{ github.repository }}:cache-ubuntu18.04-cuda11.3.1-opencv3.4.14,mode=max
-          tags: |
-            thecanadianroot/opencv-cuda:ubuntu18.04-cuda11.3.1-opencv3.4.14
-            ghcr.io/${{ github.repository }}:ubuntu18.04-cuda11.3.1-opencv3.4.14
-          build-args: |
-            UBUNTU=18.04
-            CUDA=11.3.1
-            OPENCV=3.4.14
-            NVIDIA_DISTRO=ubuntu1804/x86_64
-
-      - name: Build and Push OpenCV CUDA ROS to Registries
-        uses: docker/build-push-action@v2
-        with:
-          context: .
-          file: Dockerfile.ros-melodic
-          pull: true
-          push: true
-          cache-from: type=registry,ref=ghcr.io/${{ github.repository }}:cache-ubuntu18.04-cuda11.3.1-opencv3.4.14-rosmelodic
-          cache-to: type=registry,ref=ghcr.io/${{ github.repository }}:cache-ubuntu18.04-cuda11.3.1-opencv3.4.14-rosmelodic,mode=max
-          tags: |
-            thecanadianroot/opencv-cuda:ubuntu18.04-cuda11.3.1-opencv3.4.14-rosmelodic
-            ghcr.io/${{ github.repository }}:ubuntu18.04-cuda11.3.1-opencv3.4.14-rosmelodic
-          build-args: |
-            UBUNTU=18.04
-            CUDA=11.3.1
-            OPENCV=3.4.14
-
   build-ubuntu20_04:
     name: Build OpenCV 4.5.2 with CUDA 11.3.1 on Ubuntu 20.04
     runs-on: ubuntu-latest
@@ -97,32 +40,13 @@ jobs:
           cache-from: type=registry,ref=ghcr.io/${{ github.repository }}:cache-ubuntu20.04-cuda11.3.1-opencv4.5.2
           cache-to: type=registry,ref=ghcr.io/${{ github.repository }}:cache-ubuntu20.04-cuda11.3.1-opencv4.5.2,mode=max
           tags: |
-            thecanadianroot/opencv-cuda:ubuntu20.04-cuda11.3.1-opencv4.5.2
+            grigoriyyashin/opencv-cuda:ubuntu20.04-cuda11.3.1-opencv4.5.2
             ghcr.io/${{ github.repository }}:ubuntu20.04-cuda11.3.1-opencv4.5.2
           build-args: |
             UBUNTU=20.04
             CUDA=11.3.1
             OPENCV=4.5.2
             NVIDIA_DISTRO=ubuntu2004/x86_64
-
-      - name: Build and Push OpenCV CUDA ROS to Registries
-        uses: docker/build-push-action@v2
-        with:
-          context: .
-          file: Dockerfile.ros-noetic
-          pull: true
-          push: true
-          cache-from: type=registry,ref=ghcr.io/${{ github.repository }}:cache-ubuntu20.04-cuda11.3.1-opencv4.5.2-rosnoetic
-          cache-to: type=registry,ref=ghcr.io/${{ github.repository }}:cache-ubuntu20.04-cuda11.3.1-opencv4.5.2-rosnoetic,mode=max
-          tags: |
-            thecanadianroot/opencv-cuda:ubuntu20.04-cuda11.3.1-opencv4.5.2-rosnoetic
-            thecanadianroot/opencv-cuda:ros-latest
-            ghcr.io/${{ github.repository }}:ubuntu20.04-cuda11.3.1-opencv4.5.2-rosnoetic
-            ghcr.io/${{ github.repository }}:ros-latest
-          build-args: |
-            UBUNTU=20.04
-            CUDA=11.3.1
-            OPENCV=4.5.2
 
   build-latest-dnn:
     name: Build latest OpenCV with CUDA DNN on Ubuntu
@@ -156,8 +80,8 @@ jobs:
           cache-from: type=registry,ref=ghcr.io/${{ github.repository }}:cache-ubuntu20.04-cuda11.7.0-opencv4.6.0-dnn
           cache-to: type=registry,ref=ghcr.io/${{ github.repository }}:cache-ubuntu20.04-cuda11.7.0-opencv4.6.0-dnn,mode=max
           tags: |
-            thecanadianroot/opencv-cuda:ubuntu20.04-cuda11.7.0-opencv4.6.0-dnn
-            thecanadianroot/opencv-cuda:latest-dnn
+            grigoriyyashin/opencv-cuda:ubuntu20.04-cuda11.7.0-opencv4.6.0-dnn
+            grigoriyyashin/opencv-cuda:latest-dnn
             ghcr.io/${{ github.repository }}:ubuntu20.04-cuda11.7.0-opencv4.6.0-dnn
             ghcr.io/${{ github.repository }}:latest-dnn
           build-args: |
