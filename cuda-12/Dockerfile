@@ -1,4 +1,4 @@
-ARG CUDA="12.6.3"
+ARG CUDA="11.3.1"
 ARG UBUNTU="20.04"
 ARG ARCH=""
 
@@ -6,8 +6,8 @@ FROM nvidia/cuda${ARCH}:${CUDA}-devel-ubuntu${UBUNTU}
 
 ARG NVIDIA_DISTRO="ubuntu2004/x86_64"
 ARG OPENCV="4.5.2"
-ARG CUDA_ARCH_BIN="5.2 5.3 6.0 6.1 6.2 7.0 7.2 7.5 8.0 8.6"
-ARG CUDA_ARCH_PTX="8.6"
+ARG CUDA_ARCH_BIN="5.2 5.3 6.0 6.1 6.2 7.0 7.2 7.5 8.0 8.6 8.7 9.0"
+ARG CUDA_ARCH_PTX="8.7"
 ARG CUDNN="OFF"
 
 ENV DEBIAN_FRONTEND=noninteractive
@@ -66,7 +66,8 @@ RUN apt update && apt install -y --no-install-recommends build-essential \
     libvtk6-dev \
     liblapack-dev \
     libv4l-dev \
-    libhdf5-serial-dev
+    libhdf5-serial-dev \
+    nvtop
 
 WORKDIR /tmp
 RUN wget https://github.com/opencv/opencv/archive/refs/tags/${OPENCV}.zip && unzip ${OPENCV}.zip && rm ${OPENCV}.zip
@@ -95,4 +96,3 @@ RUN mkdir opencv-${OPENCV}/build && \
     ldconfig
 
 RUN rm -rf /tmp/* && rm -rf /var/lib/apt/lists/*
-RUN apt install -y nvtop
