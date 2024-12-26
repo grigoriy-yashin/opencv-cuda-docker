@@ -71,7 +71,7 @@ ARG OPENCV="3.4.14"
 RUN wget https://github.com/opencv/opencv/archive/refs/tags/${OPENCV}.zip && unzip ${OPENCV}.zip && rm ${OPENCV}.zip
 RUN wget https://github.com/opencv/opencv_contrib/archive/${OPENCV}.zip && unzip ${OPENCV}.zip && rm ${OPENCV}.zip
 
-ARG CUDA_ARCH_BIN="5.2 5.3 6.0 6.1 6.2 7.0 7.2 7.5 8.0 8.6"
+ARG CUDA_ARCH_BIN="6.0 6.1 6.2 7.0 7.2 7.5 8.0 8.6 8.7 8.9"
 ARG CUDA_ARCH_PTX="8.6"
 ARG CUDNN="OFF"
 
