@@ -65,7 +65,7 @@ RUN apt update && apt install -y --no-install-recommends build-essential \
     libhdf5-serial-dev \
     nvtop
 
-ARG OPENCV="4.5.2"
+ARG OPENCV="4.10.0"
 
 WORKDIR /tmp
 RUN wget https://github.com/opencv/opencv/archive/refs/tags/${OPENCV}.zip && unzip ${OPENCV}.zip && rm ${OPENCV}.zip
