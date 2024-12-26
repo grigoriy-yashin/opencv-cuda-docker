@@ -1,14 +1,10 @@
-ARG CUDA="11.7.0"
+ARG CUDA="11.3.1"
 ARG UBUNTU="20.04"
 ARG ARCH=""
 
 FROM nvidia/cuda${ARCH}:${CUDA}-devel-ubuntu${UBUNTU}
 
 ARG NVIDIA_DISTRO="ubuntu2004/x86_64"
-ARG OPENCV="4.6.0"
-ARG CUDA_ARCH_BIN="6.0 6.1 6.2 7.0 7.2 7.5 8.0 8.6 8.7 9.0"
-ARG CUDA_ARCH_PTX="8.7"
-ARG CUDNN="ON"
 
 ENV DEBIAN_FRONTEND=noninteractive
 
@@ -69,9 +65,17 @@ RUN apt update && apt install -y --no-install-recommends build-essential \
     libhdf5-serial-dev \
     nvtop
 
+ARG OPENCV="4.5.2"
+
 WORKDIR /tmp
 RUN wget https://github.com/opencv/opencv/archive/refs/tags/${OPENCV}.zip && unzip ${OPENCV}.zip && rm ${OPENCV}.zip
 RUN wget https://github.com/opencv/opencv_contrib/archive/${OPENCV}.zip && unzip ${OPENCV}.zip && rm ${OPENCV}.zip
+
+
+ARG CUDA_ARCH_BIN="7.0 7.2 7.5 8.0 8.6 8.7 8.9"
+ARG CUDA_ARCH_PTX="8.6"
+ARG CUDNN="OFF"
+
 RUN mkdir opencv-${OPENCV}/build && \
     cd opencv-${OPENCV}/build && \
     cmake -GNinja -DOPENCV_EXTRA_MODULES_PATH=/tmp/opencv_contrib-${OPENCV}/modules \
